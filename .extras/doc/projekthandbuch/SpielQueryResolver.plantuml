@@ -1,0 +1,80 @@
+' Copyright (C) 2019 - present Juergen Zimmermann, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+' Preview durch <Alt>d
+
+@startuml Controller-Klasse
+
+interface Promise<T>
+
+package @nestjs/graphql {
+  class "@Resolver" as Resolver
+  hide Resolver circle
+
+  class "@UseInterceptors" as UseInterceptors
+  hide UseInterceptors circle
+
+  class "@Query" as Query
+  hide Query circle
+
+  class "@Args" as Args
+  hide Args circle
+
+  Resolver .left[hidden].> Promise
+}
+
+package spiel {
+  package entity {
+    class Spiel <<entity>>
+  }
+
+  package service {
+    class SpielReadService << control >>
+  }
+
+  package graphql #DDDDDD {
+    class "type SpielDTO = Omit<Spiel, 'bilder' | 'aktualisiert' | 'erzeugt'" as SpielDTO
+    hide SpielDTO circle
+
+    interface IdInput {
+        id: number
+    }
+
+    class SpielQueryResolver << control >> << @Resolver() >> << @UseInterceptors() >> {
+      + @Query() async spiel(@Args() id: IdInput): Promise<SpielDTO>
+      + @Query() async spiele(@Args() name: string | undefined): Promise<SpielDTO[]>
+    }
+
+    SpielQueryResolver o-up-> "1" SpielReadService : service
+    SpielQueryResolver ..> SpielDTO
+    SpielQueryResolver ..> IdInput
+    SpielDTO ..> Spiel
+    SpielQueryResolver ..> Resolver
+
+    SpielQueryResolver ..> Promise
+
+    SpielDTO .[hidden].> Spiel
+    Spiel .[hidden].> Promise
+    SpielReadService .[hidden].> Promise
+    Spiel .[hidden].> Resolver
+    SpielReadService .[hidden].> Resolver
+  }
+}
+
+hide empty members
+
+footer (c) Juergen Zimmermann
+
+@enduml

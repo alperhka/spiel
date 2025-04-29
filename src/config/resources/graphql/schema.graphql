@@ -1,0 +1,145 @@
+# Copyright (C) 2021 - present Juergen Zimmermann, Hochschule Karlsruhe
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+# siehe app.module.ts
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"Funktionen, um Bücherdaten zu lesen"
+type Query {
+  spiele(suchkriterien: SuchkriterienInput): [Spiel!]
+
+  spiel(id: ID!): Spiel
+}
+
+"Funktionen, um Bücher neu anzulegen, zu aktualisieren oder zu löschen"
+type Mutation {
+  create(input: SpielInput!): CreatePayload
+
+  update(input: SpielUpdateInput!): UpdatePayload
+
+  delete(id: ID!): Boolean
+
+  # Mutation, wenn z.B. der Login-Zeitpunkt im IDM-System gespeichert wird
+  token(username: String!, password: String!): TokenResult
+  refresh(refresh_token: String!): TokenResult
+}
+
+"Daten zum Name eines Spieles"
+type Name {
+  name: String!
+  untertitel: String
+}
+
+"Daten zum Name eines Spieles"
+type Bild {
+  beschriftung: String!
+  contentType: String
+}
+
+"Datenschema zu einem Spiel, das gelesen wird"
+type Spiel {
+  # ID ist bei Apollo ein String
+  id: Int!
+  version: Int!
+  barcode: String!
+  rating: Int
+  art: Art
+  preis: Float!
+  lieferbar: Boolean
+  datum: String
+  homepage: String
+  schlagwoerter: [String]
+  # 1:1-Beziehung
+  name: Name!
+  # field mit @ResolveField
+  rabatt(short: Boolean): String!
+}
+
+"Enum-Typ für die Art eines Spieles"
+enum Art {
+  EPUB
+  HARDCOVER
+  PAPERBACK
+}
+
+"Suchkriterien für Bücher"
+input SuchkriterienInput {
+  name: String
+  barcode: String
+  rating: Int
+  art: Art
+  lieferbar: Boolean
+}
+
+"Daten zum Name eines neuen Spieles"
+input NameInput {
+  name: String!
+  untertitel: String
+}
+
+"Daten zu den Bilder eines Spieles"
+input BildInput {
+  beschriftung: String!
+  contentType: String!
+}
+
+"Daten für ein neues Spiel"
+input SpielInput {
+  barcode: String
+  rating: Int
+  art: Art
+  preis: Float
+  rabatt: Float
+  lieferbar: Boolean
+  datum: String
+  homepage: String
+  schlagwoerter: [String]
+  name: NameInput!
+  bilder: [BildInput!]
+}
+
+type CreatePayload {
+  id: Int
+}
+
+"Daten für ein zu änderndes Spiel"
+input SpielUpdateInput {
+  id: ID
+  version: Int
+  barcode: String
+  rating: Int
+  art: Art
+  preis: Float
+  rabatt: Float
+  lieferbar: Boolean
+  datum: String
+  homepage: String
+  schlagwoerter: [String]
+}
+
+type UpdatePayload {
+  version: Int
+}
+
+type TokenResult {
+  access_token: String!
+  expires_in: Int!
+  refresh_token: String!
+  refresh_expires_in: Int!
+}

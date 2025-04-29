@@ -1,0 +1,88 @@
+' Copyright (C) 2019 - present Juergen Zimmermann, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+' Preview durch <Alt>d
+
+@startuml Anwendungskern
+
+interface Promise<T>
+
+package @nestjs/common {
+  class "@Injectable" as Injectable
+  hide Injectable circle
+}
+
+package typeorm {
+  class Repository<T>
+}
+
+package @nestjs/typeorm {
+  class "@InjectRepository" as InjectRepository
+  hide InjectRepository circle
+}
+
+package mail {
+  class MailService
+}
+
+package spiel {
+  package entity {
+    class Spiel
+  }
+
+  package service #DDDDDD {
+    class SpielInvalid
+    class NameExists
+    class BarcodeExists
+    class VersionInvalid
+    class VersionOutdated
+
+    class SpielWriteService << control >> <<@Injectable()>> {
+      + async create(spiel: Spiel): Promise<string|SpielInvalid|NameExists|BarcodeExists>
+      + async update(id: number, spiel: Spiel, version: string): Promise<number|SpielInvalid|NameExists|BarcodeExists|VersionInvalid|VersionOutdated>
+      + async delete(id: number): Promise<boolean>
+    }
+
+    SpielWriteService o--> "1" SpielValidationService: validationService
+    SpielWriteService o--> "1" SpielReadService: readService
+    SpielWriteService o--> "1" Repository: @InjectRepository repo
+    SpielWriteService o--> "1" MailService: mailService
+
+    SpielWriteService .up.> Injectable
+    SpielWriteService .up.> InjectRepository
+
+    SpielWriteService .up.> Promise
+    SpielWriteService ..> Spiel
+    SpielWriteService .up.> SpielInvalid
+    SpielWriteService .up.> NameExists
+    SpielWriteService .up.> BarcodeExists
+    SpielWriteService .up.> VersionInvalid
+    SpielWriteService .up.> VersionOutdated
+
+    SpielInvalid .up[hidden].> Spiel
+    Spiel .up[hidden].> Promise
+    Spiel .up[hidden].> Injectable
+    Spiel .up[hidden].> InjectRepository
+    NameExists .up[hidden].> Spiel
+    SpielValidationService .[hidden].> Repository
+    SpielValidationService .[hidden].> MailService
+  }
+}
+
+hide empty members
+
+footer (c) Jürgen Zimmermann
+
+@enduml
