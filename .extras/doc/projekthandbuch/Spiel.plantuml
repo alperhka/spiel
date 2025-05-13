@@ -37,7 +37,7 @@ package typeorm {
 }
 
 package spiel.entity {
-  class "type SpielArt = 'KINDLE' | 'DRUCKAUSGABE'" as SpielArt
+  class "type SpielArt = 'ACTIONSPIEL' | 'BRETTSPIEL'" as SpielArt
   hide SpielArt circle
 
   class Spiel <<entity>> <<@Entity>> {
@@ -49,9 +49,7 @@ package spiel.entity {
     @Column() readonly preis: number
     @Column() readonly rabatt: number
     @Column() readonly lieferbar: boolean
-    @Column() readonly datum: Date
     @Column() readonly homepage?: string
-    @Column() readonly schlagwoerter?: string
     @CreateDateColumn() readonly erzeugt: Date
     @UpdateDateColumn() readonly aktualisiert: Date
   }

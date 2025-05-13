@@ -121,9 +121,9 @@ export class SpielDtoOhneRef {
     @ApiProperty({ example: 5, type: Number })
     readonly rating!: number;
 
-    @Matches(/^(EPUB|HARDCOVER|PAPERBACK)$/u)
+    @Matches(/^(BRETTSPIEL|COMPUTERSPIEL|ACTIONSPIEL)$/u)
     @IsOptional()
-    @ApiProperty({ example: 'EPUB', type: String })
+    @ApiProperty({ example: 'BRETTSPIEL', type: String })
     readonly art: SpielArt | undefined;
 
     // https://github.com/typestack/class-transformer?tab=readme-ov-file#basic-usage

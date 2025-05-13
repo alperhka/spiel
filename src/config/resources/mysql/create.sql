@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS spiel (
     version       INT NOT NULL DEFAULT 0,
     barcode          CHAR(17) UNIQUE NOT NULL,
     rating        INT NOT NULL CHECK (rating >= 0 AND rating <= 5),
-    art           ENUM('EPUB', 'HARDCOVER', 'PAPERBACK'),
+    art           ENUM('BRETTSPIEL', 'COMPUTERSPIEL', 'ACTIONSPIEL'),
     preis         DECIMAL(8,2) NOT NULL,
     rabatt        DECIMAL(4,3) NOT NULL,
     lieferbar     BOOLEAN NOT NULL DEFAULT FALSE,

@@ -241,9 +241,9 @@ export class SpielReadService {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return (
             art === undefined ||
-            art === 'EPUB' ||
-            art === 'HARDCOVER' ||
-            art === 'PAPERBACK'
+            art === 'BRETTSPIEL' ||
+            art === 'COMPUTERSPIEL' ||
+            art === 'ACTIONSPIEL'
         );
     }
 }

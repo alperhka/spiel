@@ -73,9 +73,9 @@ type Spiel {
 
 "Enum-Typ für die Art eines Spieles"
 enum Art {
-  EPUB
-  HARDCOVER
-  PAPERBACK
+  BRETTSPIEL
+  COMPUTERSPIEL
+  ACTIONSPIEL
 }
 
 "Suchkriterien für Bücher"

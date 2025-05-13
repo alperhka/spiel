@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.14.0
+# syntax=docker.io/docker/dockerfile-upstream:1.15.1
 
 # Copyright (C) 2022 - present Juergen Zimmermann, Hochschule Karlsruhe
 #
@@ -25,7 +25,7 @@
 # https://www.jenkins.io/doc/tutorials/build-a-node-js-and-react-app-with-npm
 # https://www.jenkins.io/doc/book/installing/docker
 # https://manpages.debian.org/bullseye/apt/apt-get.8.en.html
-ARG JENKINS_VERSION=2.501-jdk21
+ARG JENKINS_VERSION=2.508-jdk21
 
 FROM jenkins/jenkins:${JENKINS_VERSION}
 
@@ -65,4 +65,5 @@ EOF
 USER jenkins
 # https://plugins.jenkins.io/blueocean
 # https://plugins.jenkins.io/docker-workflow
-RUN jenkins-plugin-cli --plugins "blueocean:1.27.17 docker-workflow:611.v16e84da_6d3ff"
+#RUN jenkins-plugin-cli --plugins "blueocean:1.27.19 docker-workflow:611.v16e84da_6d3ff"
+RUN jenkins-plugin-cli --plugins "docker-workflow:611.v16e84da_6d3ff"

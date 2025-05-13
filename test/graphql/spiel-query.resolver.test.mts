@@ -1,5 +1,5 @@
-/* eslint-disable max-lines, @typescript-eslint/no-non-null-assertion */
-// Copyright (C) 2016 - present Juergen Zimmermann, Hochschule Karlsruhe
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+// Copyright (C) 2025 - present Juergen Zimmermann, Hochschule Karlsruhe
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,21 +15,12 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import { type GraphQLRequest } from '@apollo/server';
-import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
+import { beforeAll, describe, expect, test } from 'vitest';
 import { HttpStatus } from '@nestjs/common';
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
-import {
-    type Spiel,
-    type SpielArt,
-} from '../../src/spiel/entity/spiel.entity.js';
-import { type GraphQLResponseBody } from '../graphql.js';
-import {
-    host,
-    httpsAgent,
-    port,
-    shutdownServer,
-    startServer,
-} from '../testserver.js';
+import { type Spiel, type SpielArt } from '../../src/spiel/entity/spiel.entity.js';
+import { type GraphQLResponseBody } from './graphql.mjs';
+import { baseURL, httpsAgent } from '../constants.mjs';
 
 type SpielDTO = Omit<
     Spiel,
@@ -56,17 +47,15 @@ const ratingNichtVorhanden = 99;
 // T e s t s
 // -----------------------------------------------------------------------------
 // Test-Suite
-// eslint-disable-next-line max-lines-per-function
 describe('GraphQL Queries', () => {
     let client: AxiosInstance;
     const graphqlPath = 'graphql';
 
-    // Testserver starten und dabei mit der DB verbinden
+    // Axios initialisieren
     beforeAll(async () => {
-        await startServer();
-        const baseURL = `https://${host}:${port}/`;
+        const baseUrlGraphQL = `${baseURL}/`;
         client = axios.create({
-            baseURL,
+            baseURL: baseUrlGraphQL,
             httpsAgent,
             // auch Statuscode 400 als gueltigen Request akzeptieren, wenn z.B.
             // ein Enum mit einem falschen String getestest wird
@@ -74,11 +63,7 @@ describe('GraphQL Queries', () => {
         });
     });
 
-    afterAll(async () => {
-        await shutdownServer();
-    });
-
-    test('Spiel zu vorhandener ID', async () => {
+    test.concurrent('Spiel zu vorhandener ID', async () => {
         // given
         const body: GraphQLRequest = {
             query: `
@@ -119,7 +104,7 @@ describe('GraphQL Queries', () => {
         expect(spiel.id).toBeUndefined();
     });
 
-    test('Spiel zu nicht-vorhandener ID', async () => {
+    test.concurrent('Spiel zu nicht-vorhandener ID', async () => {
         // given
         const id = '999999';
         const body: GraphQLRequest = {
@@ -157,7 +142,7 @@ describe('GraphQL Queries', () => {
         expect(extensions!.code).toBe('BAD_USER_INPUT');
     });
 
-    test('Spiel zu vorhandenem Name', async () => {
+    test.concurrent('Spiel zu vorhandenem Name', async () => {
         // given
         const body: GraphQLRequest = {
             query: `
@@ -194,7 +179,7 @@ describe('GraphQL Queries', () => {
         expect(spiel!.name?.name).toBe(nameVorhanden);
     });
 
-    test('Spiel zu vorhandenem Teil-Name', async () => {
+    test.concurrent('Spiel zu vorhandenem Teil-Name', async () => {
         // given
         const body: GraphQLRequest = {
             query: `
@@ -227,13 +212,13 @@ describe('GraphQL Queries', () => {
         spiele
             .map((spiel) => spiel.name)
             .forEach((name) =>
-                expect(name?.name.toLowerCase()).toEqual(
+                expect(name?.name?.toLowerCase()).toStrictEqual(
                     expect.stringContaining(teilNameVorhanden),
                 ),
             );
     });
 
-    test('Spiel zu nicht vorhandenem Name', async () => {
+    test.concurrent('Spiel zu nicht vorhandenem Name', async () => {
         // given
         const body: GraphQLRequest = {
             query: `
@@ -273,7 +258,7 @@ describe('GraphQL Queries', () => {
         expect(extensions!.code).toBe('BAD_USER_INPUT');
     });
 
-    test('Spiel zu vorhandener BARCODE-Nummer', async () => {
+    test.concurrent('Spiel zu vorhandener BARCODE-Nummer', async () => {
         // given
         const body: GraphQLRequest = {
             query: `
@@ -312,7 +297,7 @@ describe('GraphQL Queries', () => {
         expect(name?.name).toBeDefined();
     });
 
-    test('Spiele mit Mindest-"rating"', async () => {
+    test.concurrent('Spiele mit Mindest-"rating"', async () => {
         // given
         const body: GraphQLRequest = {
             query: `
@@ -349,13 +334,13 @@ describe('GraphQL Queries', () => {
             const { rating, name } = spiel;
 
             expect(rating).toBeGreaterThanOrEqual(ratingMin);
-            expect(name?.name.toLowerCase()).toEqual(
+            expect(name?.name?.toLowerCase()).toStrictEqual(
                 expect.stringContaining(teilNameVorhanden),
             );
         });
     });
 
-    test('Kein Spiel zu nicht-vorhandenem "rating"', async () => {
+    test.concurrent('Kein Spiel zu nicht-vorhandenem "rating"', async () => {
         // given
         const body: GraphQLRequest = {
             query: `
@@ -394,7 +379,7 @@ describe('GraphQL Queries', () => {
         expect(extensions!.code).toBe('BAD_USER_INPUT');
     });
 
-    test('Spiele zur Art "BRETTSPIEL"', async () => {
+    test.concurrent('Spiele zur Art "BRETTSPIEL"', async () => {
         // given
         const spielArt: SpielArt = 'BRETTSPIEL';
         const body: GraphQLRequest = {
@@ -434,7 +419,7 @@ describe('GraphQL Queries', () => {
         });
     });
 
-    test('Spiele zur einer ungueltigen Art', async () => {
+    test.concurrent('Spiele zur einer ungueltigen Art', async () => {
         // given
         const spielArt = 'UNGUELTIG';
         const body: GraphQLRequest = {
@@ -471,7 +456,7 @@ describe('GraphQL Queries', () => {
         expect(extensions!.code).toBe('GRAPHQL_VALIDATION_FAILED');
     });
 
-    test('Spiele mit lieferbar=true', async () => {
+    test.concurrent('Spiele mit lieferbar=true', async () => {
         // given
         const body: GraphQLRequest = {
             query: `
@@ -511,4 +496,4 @@ describe('GraphQL Queries', () => {
     });
 });
 
-/* eslint-enable max-lines, , @typescript-eslint/no-non-null-assertion */
+/* eslint-enable @typescript-eslint/no-non-null-assertion */

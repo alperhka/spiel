@@ -58,7 +58,7 @@ import { Name } from './name.entity.js';
 /**
  * Alias-Typ für gültige Strings bei der Art eines Spieles.
  */
-export type SpielArt = 'EPUB' | 'HARDCOVER' | 'PAPERBACK';
+export type SpielArt = 'BRETTSPIEL' | 'COMPUTERSPIEL' | 'ACTIONSPIEL';
 
 /**
  * Entity-Klasse zu einer relationalen Tabelle.
@@ -87,7 +87,7 @@ export class Spiel {
     readonly rating: number | undefined;
 
     @Column('varchar')
-    @ApiProperty({ example: 'EPUB', type: String })
+    @ApiProperty({ example: 'BRETTSPIEL', type: String })
     readonly art: SpielArt | undefined;
 
     // TypeORM liest Gleitkommazahlen als String: Rundungsfehler vermeiden

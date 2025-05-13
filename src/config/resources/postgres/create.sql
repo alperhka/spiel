@@ -37,7 +37,7 @@ ALTER ROLE spiel SET search_path = 'spiel';
 
 -- https://www.postgresql.org/docs/current/sql-createtype.html
 -- https://www.postgresql.org/docs/current/datatype-enum.html
-CREATE TYPE spielart AS ENUM ('EPUB', 'HARDCOVER', 'PAPERBACK');
+CREATE TYPE spielart AS ENUM ('BRETTSPIEL', 'COMPUTERSPIEL', 'ACTIONSPIEL');
 
 -- https://www.postgresql.org/docs/current/sql-createtable.html
 -- https://www.postgresql.org/docs/current/datatype.html
