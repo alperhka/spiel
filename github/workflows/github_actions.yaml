@@ -20,4 +20,4 @@ jobs:
         node-version: '23.9.0'
 
     - run: npm install
-    - run: echo "Running tests..."
+    - run: echo "Running tests.."
