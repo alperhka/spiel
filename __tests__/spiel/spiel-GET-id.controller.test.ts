@@ -31,7 +31,7 @@
 //    needle      https://github.com/tomas/needle
 //    ky          https://github.com/sindresorhus/ky
 
-import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import { HttpStatus } from '@nestjs/common';
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import { type Spiel } from '../../src/spiel/entity/spiel.entity.js';
