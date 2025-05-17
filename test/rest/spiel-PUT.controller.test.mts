@@ -17,7 +17,7 @@ import { beforeAll, describe, expect, inject, test } from 'vitest';
 import { HttpStatus } from '@nestjs/common';
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import { Decimal } from 'decimal.js';
-import { type SpielDtoOhneRef } from '../../src/spiel/controller/spielDTO.entity.js';
+import { type SpielDtoOhneRef } from '../../src/spiel/controller/buchDTO.entity.js';
 import { baseURL, httpsAgent } from '../constants.mjs';
 import { type ErrorResponse } from './error-response.mjs';
 
@@ -72,7 +72,7 @@ const geaendertesSpielInvalid: Record<string, unknown> = {
     homepage: 'anyHomepage',
 };
 
-const veraltesSpiell:SSpielhDtoOhneRef = {
+const veraltesSpiel: SpielDtoOhneRef = {
     barcode: '978-0-007-09732-6',
     rating: 1,
     art: 'BRETTSPIEL',

@@ -28,7 +28,7 @@ export class Name {
     @PrimaryGeneratedColumn()
     id: number | undefined;
 
-    @Column()
+    @Column('varchar')
     readonly name!: string;
 
     @Column('varchar')

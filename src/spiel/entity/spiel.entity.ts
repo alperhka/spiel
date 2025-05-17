@@ -78,7 +78,7 @@ export class Spiel {
     @VersionColumn()
     readonly version: number | undefined;
 
-    @Column()
+    @Column('varchar')
     @ApiProperty({ example: '0-0070-0644-6', type: String })
     readonly barcode!: string;
 

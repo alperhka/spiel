@@ -17,7 +17,7 @@ import { beforeAll, describe, expect, inject, test } from 'vitest';
 import { HttpStatus } from '@nestjs/common';
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import { Decimal } from 'decimal.js';
-import { type SpielDTO } from '../../src/spiel/controller/spielDTO.entity.js';
+import { type SpielDTO } from '../../src/spiel/controller/buchDTO.entity.js';
 import { SpielReadService } from '../../src/spiel/service/spiel-read.service.js';
 import { baseURL, httpsAgent } from '../constants.mjs';
 import { type ErrorResponse } from './error-response.mjs';

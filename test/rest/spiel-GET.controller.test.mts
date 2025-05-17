@@ -25,8 +25,8 @@ import { type ErrorResponse } from './error-response.mjs';
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const nameVorhanden = 'a';
-const nameNichtVorhanden = 'xx';
+const titelVorhanden = 'a';
+const titelNichtVorhanden = 'xx';
 const ratingMin = 3;
 const preisMax = 33.5;
 const schlagwortVorhanden = 'javascript';
@@ -71,7 +71,7 @@ describe('GET /rest', () => {
 
     test.concurrent('Spiele mit einem Teil-Name suchen', async () => {
         // given
-        const params = { name: nameVorhanden };
+        const params = { name: titelVorhanden };
 
         // when
         const { status, headers, data }: AxiosResponse<Page<Spiel>> =
@@ -87,7 +87,7 @@ describe('GET /rest', () => {
             .map((spiel) => spiel.name)
             .forEach((name) =>
                 expect(name?.name?.toLowerCase()).toStrictEqual(
-                    expect.stringContaining(nameVorhanden),
+                    expect.stringContaining(titelVorhanden),
                 ),
             );
     });
@@ -96,7 +96,7 @@ describe('GET /rest', () => {
         'Spiele zu einem nicht vorhandenen Teil-Name suchen',
         async () => {
             // given
-            const params = { name: nameNichtVorhanden };
+            const params = { name: titelNichtVorhanden };
 
             // when
             const { status, data }: AxiosResponse<ErrorResponse> =

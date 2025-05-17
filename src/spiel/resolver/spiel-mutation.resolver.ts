@@ -70,7 +70,7 @@ export class SpielMutationResolver {
     }
 
     @Mutation()
-    @Roles({ roles: ['admin', 'user'] })
+    @Roles('admin', 'user')
     async create(@Args('input') spielDTO: SpielDTO) {
         this.#logger.debug('create: spielDTO=%o', spielDTO);
 
@@ -82,7 +82,7 @@ export class SpielMutationResolver {
     }
 
     @Mutation()
-    @Roles({ roles: ['admin', 'user'] })
+    @Roles('admin', 'user')
     async update(@Args('input') spielDTO: SpielUpdateDTO) {
         this.#logger.debug('update: spiel=%o', spielDTO);
 
@@ -101,7 +101,7 @@ export class SpielMutationResolver {
     }
 
     @Mutation()
-    @Roles({ roles: ['admin'] })
+    @Roles('admin')
     async delete(@Args() id: IdInput) {
         const idStr = id.id;
         this.#logger.debug('delete: id=%s', idStr);

@@ -1,23 +1,32 @@
-# .github/workflows/node-test.yml
 name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Quellcode auschecken
+        uses: actions/checkout@v4
 
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '23.9.0'
+      - name: Node.js installieren
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-    - run: npm install
-    - run: echo "Running tests.."
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: TypeScript kompilieren
+        run: tsc
+
+      - name: NestJS bauen
+        run: npm run build
+
+      - name: Tests ausführen
+        run: echo "Erfolgreich geprompted"

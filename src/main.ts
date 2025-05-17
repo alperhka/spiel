@@ -19,6 +19,8 @@
 
 // Modul in JS = Datei
 // Pfad innerhalb von Packages in node_modules ("nicht-relative Imports")
+// eslint-disable-next-line import/no-unassigned-import
+import 'reflect-metadata';
 import { type INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {

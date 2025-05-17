@@ -29,7 +29,7 @@ export class Bild {
     @PrimaryGeneratedColumn()
     id: number | undefined;
 
-    @Column()
+    @Column({ type: 'varchar' }) 
     readonly beschriftung!: string;
 
     @Column('varchar')

@@ -34,7 +34,7 @@ type SpielDTO = Omit<
 // -----------------------------------------------------------------------------
 const idVorhanden = '1';
 
-const nameVorhanden = 'Alpha';
+const titelVorhanden = 'Alpha';
 const teilNameVorhanden = 'a';
 const teilNameNichtVorhanden = 'abc';
 
@@ -148,7 +148,7 @@ describe('GraphQL Queries', () => {
             query: `
                 {
                     spiele(suchkriterien: {
-                        name: "${nameVorhanden}"
+                        name: "${titelVorhanden}"
                     }) {
                         art
                         name {
@@ -176,7 +176,7 @@ describe('GraphQL Queries', () => {
 
         const [spiel] = spiele;
 
-        expect(spiel!.name?.name).toBe(nameVorhanden);
+        expect(spiel!.name?.name).toBe(titelVorhanden);
     });
 
     test.concurrent('Spiel zu vorhandenem Teil-Name', async () => {
@@ -381,12 +381,12 @@ describe('GraphQL Queries', () => {
 
     test.concurrent('Spiele zur Art "BRETTSPIEL"', async () => {
         // given
-        const spielArt: SpielArt = 'BRETTSPIEL';
+        const buchArt: SpielArt = 'BRETTSPIEL';
         const body: GraphQLRequest = {
             query: `
                 {
                     spiele(suchkriterien: {
-                        art: ${spielArt}
+                        art: ${buchArt}
                     }) {
                         art
                         name {
@@ -414,19 +414,19 @@ describe('GraphQL Queries', () => {
         spiele.forEach((spiel) => {
             const { art, name } = spiel;
 
-            expect(art).toBe(spielArt);
+            expect(art).toBe(buchArt);
             expect(name?.name).toBeDefined();
         });
     });
 
     test.concurrent('Spiele zur einer ungueltigen Art', async () => {
         // given
-        const spielArt = 'UNGUELTIG';
+        const buchArt = 'UNGUELTIG';
         const body: GraphQLRequest = {
             query: `
                 {
                     spiele(suchkriterien: {
-                        art: ${spielArt}
+                        art: ${buchArt}
                     }) {
                         name {
                             name
